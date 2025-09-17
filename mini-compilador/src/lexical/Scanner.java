@@ -5,9 +5,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import util.PalavrasReservadas;
 import util.TokenType;
 
-public class pppppppppppppScanner {
+public class Scanner {
 	private int state;
 	private char[] sourceCode;
 	private int pos;
@@ -26,6 +27,7 @@ public class pppppppppppppScanner {
 		char currentChar;
 		String content = "";
 		state = 0;
+        PalavrasReservadas palavrasReservadas = new PalavrasReservadas();
 		
 		while (true) {
 			if(isEoF()) {
@@ -39,17 +41,35 @@ public class pppppppppppppScanner {
                         content += currentChar;
                         state = 1;
                     }
-                    if (isDigit(currentChar)) {
+                    else if (isDigit(currentChar)) { // DIGITO+ OU DIGITO+ . DIGITO +
                         content += currentChar;
                         state = 3;
                     }
-                    if (isMathOperator(currentChar)){
+                    else if (isMathOperator(currentChar)){
                         content += currentChar;
                         state = 5;
                     }
-                    if (isRelOperator(currentChar)){
+                    else if(currentChar == '=' ){
                         content += currentChar;
                         state = 6;
+                    }// TESTAR SE TEM UM IGUAL, SE NÃO, TESTAR SE É O !
+                    else if(currentChar == '!'){
+                        content += currentChar;
+                        state = 7; //SE N FOR UM ! ENTÃO TESTAR SE É OS OUTROS RELACIONAIS
+                    }
+                    else if(isRelOperator(currentChar)){ //VAI SER UM < OU >
+                        content += currentChar;
+                        state = 8;
+                    }
+                    else if(isParenthesis(currentChar)){
+                        content += currentChar;
+                        state = 10;
+                    }
+                    else if(currentChar == '.'){
+                        content += currentChar;
+                        state = 11;
+                    }
+                    else if (currentChar == '\n'){
                     }
                     break;
                 case 1:
@@ -57,6 +77,9 @@ public class pppppppppppppScanner {
                         content += currentChar;
                         state = 1;
                     } else {
+                        if(palavrasReservadas.isReservada(content)){
+                            throw new RuntimeException(content+" é uma palavra reservada");
+                        }
                         state = 2;
                     }
                     break;
@@ -64,9 +87,13 @@ public class pppppppppppppScanner {
                     back();
                     return new Token(TokenType.IDENTIFIER, content);
                 case 3:
-                    if(isDigit(currentChar)){
+                    if(isDigit(currentChar)){ // pode ser decimal
                         content += currentChar;
                         state = 3;
+                    }
+                    else if (currentChar == '.'){
+                        content += currentChar;
+                        state = 11;
                     }
                     else{
                         state = 4;
@@ -79,17 +106,62 @@ public class pppppppppppppScanner {
                     back();
                     return new Token(TokenType.MATH_OPERATOR, content);
                 case 6:
-                    if(!isRelOperator(currentChar)){
+                    if(currentChar == '='){
+                        content += currentChar;
+                        state = 9;  //SE FOR == IR PARA O ESTADO QUE RETORNA RELACIONAL
+                    }
+                    else {
+                        back();
+                        return new Token(TokenType.ASSIGNMENT, content); //SE N, É UM = DE ATRIBUIÇÃO
+                    }
+                    break;
+                case 7:// !
+                    if(currentChar == '='){
+                        content += currentChar;
+                        state = 9;
+                    }
+                    else {
+                        back();
+                        throw new RuntimeException("! não foi reconhecido"); //SE N É UM =, SE TORNA UM ERRO LÉXICO
+                    }
+                    break;
+                case 8: //SENDO UM > OU <, se currentchar for um = adicionar no content e ir para o estado de retorno prox loop, se n for ja retornar
+                    if(currentChar == '='){
+                        content += currentChar;
+                        state = 9;
+                    }
+                    else {
                         back();
                         return new Token(TokenType.REL_OPERATOR, content);
                     }
-                    else {
-                        if(currentChar == '='){
-                            content += currentChar;
-                            case
-                        }
+                    break;
+                case 9:
+                    back();
+                    return new Token(TokenType.REL_OPERATOR, content);
+                case 10:
+                    back();
+                    return new Token(TokenType.PARENTHESIS, content);
+                case 11: //É UM PONTO ENT TEM QUE TER NÚMERO NA FRENTE, PODE TER NÚMERO ATRAS
+                    if(!isDigit(currentChar)){// se o proximo caracter apos o . n for digito FALHA
+                        throw new RuntimeException("Esperava um número apos o ponto");
                     }
-
+                    else{
+                        content += currentChar;
+                        state = 12;
+                    }
+                    break;
+                case 12: //PONTO TEM PELO MENOS UM NUMERO NA FRENTE, TESTAR SE TEM MAIS, SE N TIVER VALIDAR E RETORNAR
+                    if(isDigit(currentChar)){
+                        content += currentChar;
+                        state = 12;
+                    }
+                    else {
+                        state = 13;
+                    }
+                    break;
+                case 13:
+                    back();
+                    return new Token(TokenType.DECIMALNUMBER, content);
             }
 		}
 	}
@@ -109,6 +181,10 @@ public class pppppppppppppScanner {
 	private boolean isRelOperator(char c) {
 		return c == '>' || c == '<' || c == '=' || c == '!';
 	}
+
+    private boolean isParenthesis(char c){
+        return c == '(' || c == ')';
+    }
 	
 	private char nextChar() {
 		return sourceCode[pos++];
@@ -121,5 +197,6 @@ public class pppppppppppppScanner {
 	private boolean isEoF() {
 		return pos >= sourceCode.length;
 	}
-	
+
+
 }

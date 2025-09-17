@@ -1,0 +1,42 @@
+
+b	java:S112Q"FDefine and throw a dedicated exception instead of using a generic one.(›Î±þ8ä¨¦«•3
+b	java:S112}"FDefine and throw a dedicated exception instead of using a generic one.(¯®Î°8ä¨¦«•3
+h	java:S112’"FDefine and throw a dedicated exception instead of using a generic one.(ð´²îüÿÿÿÿ8ä¨¦«•3
+9
+java:S1643)"Use a StringBuilder instead.(™—›Ì8å¨¦«•3
+9
+java:S1643-"Use a StringBuilder instead.(™—›Ì8å¨¦«•3
+9
+java:S16431"Use a StringBuilder instead.(™—›Ì8å¨¦«•3
+9
+java:S16435"Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S16439"Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643="Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643A"Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643E"Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643M"Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643["Use a StringBuilder instead.(™—›Ì8æ¨¦«•3
+9
+java:S1643_"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+9
+java:S1643n"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+9
+java:S1643x"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+:
+java:S1643‚"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+:
+java:S1643•"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+:
+java:S1643›"Use a StringBuilder instead.(™—›Ì8ç¨¦«•3
+v
+java:S1450"TRemove the "state" field and declare it as a local variable in the relevant methods.(Ùîˆõýÿÿÿÿ8Õ©¦«•3
+o
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 50 to the 15 allowed.(Œ¦¹ò8Ù©¦«•3
+>	java:S131&""Add a default case to this switch.(þ™ÅÞ8Ü©¦«•3
+J	java:S108H")Either remove or fill this block of code.(—Ó²þüÿÿÿÿ8å©¦«•3

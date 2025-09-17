@@ -11,3 +11,5 @@ REL_OPERATOR:
 	> | >= | < | <= | !=
 ASSIGNMENT:
 	=
+PARENTHESIS:
+    ( | )
